@@ -50,9 +50,13 @@ function App() {
     }
 
     setSelectedRecipeId(newRecipe.id)
+<<<<<<< Updated upstream
     setRecipes([...recipes, newRecipe])
     //get out of searching mode
     setIsSearching(false)
+=======
+    setRecipes([...searchRecipes, newRecipe])
+>>>>>>> Stashed changes
   }
 
   function handleRecipeChange(id, recipe) {
@@ -88,7 +92,11 @@ function App() {
     <RecipeContext.Provider value={recipeContextValue}>
       <SearchBar />
       {/* updating searchRecipes instead of recipes*/}
+<<<<<<< Updated upstream
       <RecipeList recipes={isSearching ? searchRecipes : recipes} />
+=======
+      <RecipeList recipes={searchRecipes || recipes} />
+>>>>>>> Stashed changes
       {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
     </RecipeContext.Provider>
   )

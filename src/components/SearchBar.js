@@ -8,8 +8,8 @@ export default function SearchBar() {
     return (
         <div className = "search-bar__container">
             <input className = "search-bar__input"
+            placeholder = "Search Your Recipes"
             onChange = {(e)=> console.log(handleSearchBar(e.target.value))} />
-            <button className = "search-bar__btn btn btn--primary">Search</button>
         </div>
     )
 }
