@@ -14,7 +14,8 @@ function App() {
   //ADDED searchRecipes
   const [searchRecipes, setSearchRecipes] = useState(recipes);
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId)
-
+  //adding isSearching variable
+  const [isSearching, setIsSearching] = useState(false);
   useEffect(() => {
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
     if (recipeJSON != null) setRecipes(JSON.parse(recipeJSON))
@@ -50,6 +51,8 @@ function App() {
 
     setSelectedRecipeId(newRecipe.id)
     setRecipes([...recipes, newRecipe])
+    //get out of searching mode
+    setIsSearching(false)
   }
 
   function handleRecipeChange(id, recipe) {
@@ -57,6 +60,8 @@ function App() {
     const index = newRecipes.findIndex(r => r.id === id);
     newRecipes[index] = recipe;
     setRecipes(newRecipes)
+    //get out of searching mode
+    setIsSearching(false)
   }
 
   function handleRecipeDelete(id) {
@@ -64,27 +69,26 @@ function App() {
       setSelectedRecipeId(undefined);
     }
     setRecipes(recipes.filter(recipe => recipe.id !== id))
+    //get out of searching mode
+    setIsSearching(false)
   }
 
   //SEARCH BAR IS NOT FUNCTIONAL: https://dev.to/asimdahall/simple-search-form-in-react-using-hooks-42pg
   function handleSearchBar(search) {
+    //get in searching mode
+    setIsSearching(true)
     //UPDATED handleSearchBar
     console.log("search", search)
-    if (search === "") {
-      setSearchRecipes(recipes)
-      return recipes
-    } else {
-      let searchResult = recipes.filter(recipe => recipe.name.toLowerCase().includes(search.toLowerCase()))
-      setSearchRecipes(searchResult);
-      return searchResult
-    }
+    let searchResult = recipes.filter(recipe => recipe.name.toLowerCase().includes(search.toLowerCase()))
+    setSearchRecipes(searchResult);
+    return searchResult
   }
 
   return (
     <RecipeContext.Provider value={recipeContextValue}>
       <SearchBar />
       {/* updating searchRecipes instead of recipes*/}
-      <RecipeList recipes={searchRecipes} />
+      <RecipeList recipes={isSearching ? searchRecipes : recipes} />
       {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
     </RecipeContext.Provider>
   )
