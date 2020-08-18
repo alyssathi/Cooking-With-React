@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RecipeList from './RecipeList'
 import RecipeEdit from './RecipeEdit'
+import SearchBar from './SearchBar'
 import '../css/app.css'
 import {v4 as uuidv4} from 'uuid'
 
@@ -26,6 +27,7 @@ function App() {
     handleRecipeDelete,
     handleRecipeSelect,
     handleRecipeChange,
+    handleSearchBar
   }
 
   function handleRecipeSelect(id) {
@@ -62,8 +64,15 @@ function App() {
     setRecipes(recipes.filter(recipe => recipe.id !== id))
   }
 
+  //SEARCH BAR IS NOT FUNCTIONAL: https://dev.to/asimdahall/simple-search-form-in-react-using-hooks-42pg
+  function handleSearchBar(search) {
+    return recipes.filter(recipe => recipe.name.toLowerCase().includes(search.toLowerCase()));
+
+  }
+
   return (
     <RecipeContext.Provider value={recipeContextValue}>
+      <SearchBar />
       <RecipeList recipes={recipes} />
       {selectedRecipe && <RecipeEdit recipe = {selectedRecipe}/>}
     </RecipeContext.Provider>

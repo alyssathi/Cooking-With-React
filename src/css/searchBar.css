@@ -1,0 +1,11 @@
+.search-bar__container {
+    text-align: end;
+}
+
+.search-bar__btn {
+    margin: 10px;
+}
+
+.search-bar__input {
+    font-size: inherit;
+}
