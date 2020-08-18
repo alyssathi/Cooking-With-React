@@ -3,7 +3,7 @@ import RecipeList from './RecipeList'
 import RecipeEdit from './RecipeEdit'
 import SearchBar from './SearchBar'
 import '../css/app.css'
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 export const RecipeContext = React.createContext()
 const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes'
@@ -11,6 +11,8 @@ const LOCAL_STORAGE_KEY = 'cookingWithReact.recipes'
 function App() {
   const [selectedRecipeId, setSelectedRecipeId] = useState();
   const [recipes, setRecipes] = useState(sampleRecipes);
+  //ADDED searchRecipes
+  const [searchRecipes, setSearchRecipes] = useState(recipes);
   const selectedRecipe = recipes.find(recipe => recipe.id === selectedRecipeId)
 
   useEffect(() => {
@@ -53,12 +55,12 @@ function App() {
   function handleRecipeChange(id, recipe) {
     const newRecipes = [...recipes];
     const index = newRecipes.findIndex(r => r.id === id);
-    newRecipes[index] =recipe;
+    newRecipes[index] = recipe;
     setRecipes(newRecipes)
   }
 
   function handleRecipeDelete(id) {
-    if (selectedRecipeId !== null && selectedRecipeId ===id) {
+    if (selectedRecipeId !== null && selectedRecipeId === id) {
       setSelectedRecipeId(undefined);
     }
     setRecipes(recipes.filter(recipe => recipe.id !== id))
@@ -66,15 +68,24 @@ function App() {
 
   //SEARCH BAR IS NOT FUNCTIONAL: https://dev.to/asimdahall/simple-search-form-in-react-using-hooks-42pg
   function handleSearchBar(search) {
-    return recipes.filter(recipe => recipe.name.toLowerCase().includes(search.toLowerCase()));
-
+    //UPDATED handleSearchBar
+    console.log("search", search)
+    if (search === "") {
+      setSearchRecipes(recipes)
+      return recipes
+    } else {
+      let searchResult = recipes.filter(recipe => recipe.name.toLowerCase().includes(search.toLowerCase()))
+      setSearchRecipes(searchResult);
+      return searchResult
+    }
   }
 
   return (
     <RecipeContext.Provider value={recipeContextValue}>
       <SearchBar />
-      <RecipeList recipes={recipes} />
-      {selectedRecipe && <RecipeEdit recipe = {selectedRecipe}/>}
+      {/* updating searchRecipes instead of recipes*/}
+      <RecipeList recipes={searchRecipes} />
+      {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
     </RecipeContext.Provider>
   )
 }
